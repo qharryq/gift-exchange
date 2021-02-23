@@ -1,0 +1,33 @@
+body {
+  padding: 100px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body .members-column {
+  display: inline-block;
+  margin-right: 2em;
+  vertical-align: top;
+}
+
+body .members-column .column-header {
+  padding-bottom: 5px;
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+body .add-member-col input {
+  margin-bottom: 10px;
+}
+
+body .members-column .member-display-ele {
+  padding-bottom: 10px;
+}
+
+body .members-column .member-display-ele button {
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+body .members-column .member-display-ele .edit-view {
+  display: none;
+}
