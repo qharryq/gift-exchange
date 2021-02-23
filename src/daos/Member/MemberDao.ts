@@ -1,5 +1,5 @@
 import { IMember } from '@entities/Member';
-import MockDaoMock from '../MockDb/MockDao.mock';
+import MockMemberDbMethods from '../MockDb/MockMemberDbMethods';
 
 interface IMemberDao {
     getOne: (id: string) => Promise<IMember | null>;
@@ -9,7 +9,7 @@ interface IMemberDao {
     delete: (id: string) => Promise<boolean>;
 }
 
-class MemberDao extends MockDaoMock implements IMemberDao {
+class MemberDao extends MockMemberDbMethods implements IMemberDao {
 
     public async getOne(id: string): Promise<IMember | null> {
         const db = await super.openDb();

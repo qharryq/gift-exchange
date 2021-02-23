@@ -1,7 +1,7 @@
 import StatusCodes from 'http-status-codes';
 import { Request, Response, Router } from 'express';
 import { IsEmail } from 'class-validator';
-import MemberDao from '@daos/Member/MemberDao.mock';
+import MemberDao from '@daos/Member/MemberDao';
 import { validateObject, validationError } from '../shared/validation';
 
 const router = Router();
