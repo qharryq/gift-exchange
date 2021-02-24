@@ -1,16 +1,16 @@
 export interface IGiftExchange {
     memberId: string;
-    recipientMemberId: string;
+    recentRecipientMemberIds: string[];
 }
 
 class GiftExchange implements IGiftExchange {
 
     memberId: string;
-    recipientMemberId: string;
+    recentRecipientMemberIds: string[];
 
-    constructor(memberId: string, recipientMemberId: string) {
+    constructor(memberId: string, recentRecipientMemberIds: string[]) {
         this.memberId = memberId;
-        this.recipientMemberId = recipientMemberId;
+        this.recentRecipientMemberIds = recentRecipientMemberIds;
     }
 }
 

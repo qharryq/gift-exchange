@@ -48,6 +48,7 @@ class MemberDao extends MockMemberDbMethods implements IMemberDao {
         return member;
     }
 
+    // TODO use findIndex here and in delete, like in gift exchange
     public async update(member: IMember): Promise<IMember | null> {
         const db = await super.openDb();
         for (let i = 0; i < db.members.length; i++) {
