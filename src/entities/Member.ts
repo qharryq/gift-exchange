@@ -1,3 +1,5 @@
+// I introduced email as another unique identifier besides id
+// This takes care of the likely scenario where several family members have the same name
 export interface IMember {
     id: string;
     name: string;

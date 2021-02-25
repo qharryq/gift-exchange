@@ -1,12 +1,22 @@
 import { Response } from 'supertest';
 import { IMember } from '@entities/Member';
+import { IGiftExchange } from '@entities/GiftExchange'
 
-
-export interface IResponse extends Response {
+export interface ISingleMemberResponse extends Response {
     body: {
-        members: IMember[];
         error: string;
+        id: string;
+        name: string;
+        email: string;
     };
+}
+
+export interface IMultipleMembersResponse extends Response {
+    body: IMember[];
+}
+
+export interface IGiftExchangeResponse extends Response {
+    body: IGiftExchange[];
 }
 
 export interface IReqBody {

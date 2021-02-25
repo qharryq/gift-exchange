@@ -50,7 +50,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const member = await memberDao.getOne(id);
     if (!member) {
-        return res.status(StatusCodes.NOT_FOUND).json('Member ID not found');
+        return res.status(StatusCodes.NOT_FOUND).json({error: 'Member ID not found'});
     }
     return res.status(StatusCodes.OK).json(member);
 });
@@ -73,7 +73,7 @@ router.put('/', validateObject(UpdateMemberRequest), async (req: Request, res: R
     const member = req.body;
     const updatedMember = await memberDao.update(member);
     if (!updatedMember){
-        return res.status(StatusCodes.NOT_FOUND).json('Member ID not found');
+        return res.status(StatusCodes.NOT_FOUND).json({error: 'Member ID not found'});
     }
     return res.status(StatusCodes.OK).json(updatedMember);
 });
@@ -87,7 +87,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
     if (await memberDao.delete(id)) {
         return res.status(StatusCodes.OK).json('Member successfully deleted');
     }
-    return res.status(StatusCodes.NOT_FOUND).json('Member ID not found');
+    return res.status(StatusCodes.NOT_FOUND).json({error: 'Member ID not found'});
 });
 
 router.use(validationError);

@@ -9,7 +9,7 @@ class MockMemberDbMethods {
 
     private readonly dbFilePath = 'src/daos/MockDb/MockMembersDb.json';
 
-    protected openDb(): Promise<IDatabase> {
+    public openDb(): Promise<IDatabase> {
         return jsonfile.readFile(this.dbFilePath) as Promise<IDatabase>;
     }
 

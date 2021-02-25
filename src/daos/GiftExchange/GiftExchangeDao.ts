@@ -3,6 +3,8 @@ import MockGiftExchangeDbMethods from '../MockDb/MockGiftExchangeDbMethods';
 
 interface IGiftExchangeDao {
     getAll: () => Promise<IGiftExchange[]>;
+    getRecentRecipients: (id: string) => Promise<string[]>;
+    addOrUpdate: (giftExchanges: IGiftExchange[]) => Promise<void>;
 }
 
 class GiftExchangeDao extends MockGiftExchangeDbMethods implements IGiftExchangeDao {
@@ -12,45 +14,32 @@ class GiftExchangeDao extends MockGiftExchangeDbMethods implements IGiftExchange
         return db.giftAssignments;
     }
 
-    public async getRecentRecipients(id: string): Promise<string[] | null> {
+    // Each member may only have the same recipient once every 3 years
+    public async getRecentRecipients(id: string): Promise<string[]> {
         const db = await super.openDb();
-        console.log('getting the recent recipients for '+ id);
-        console.log('looping throught the recent recipients db');
-        for await (const assignment of db.giftAssignments) {
-            console.log(assignment);
+        for (const assignment of db.giftAssignments) {
             if (assignment.memberId === id) {
-                console.log('heres the bleediin assignment ' + assignment.recentRecipientMemberIds);
                 return assignment.recentRecipientMemberIds;
             }
         }
-        return null;
+        return [];
     }
 
-    // add all the giver/recipient pairs in one transaction to avoid partial success
-    public async addOrUpdate(giftExchanges: IGiftExchange[]): Promise<IGiftExchange[]> {
-        console.log('ok im commiting now ' + giftExchanges);
+    // commit all the giver/recipient pairs in one transaction to avoid partial success
+    // i.e. make it atomic
+    public async addOrUpdate(giftExchanges: IGiftExchange[]): Promise<void> {
         const db = await super.openDb();
-        for await (const ge of giftExchanges) {
-            console.log(ge.memberId + 'is buying for ' + ge.recentRecipientMemberIds[0])
-            console.log('here are the current figt assignments in db');
-            for (const y of db.giftAssignments){
-                console.log(y);
-            }
-            console.log('trying sumn');
-            console.log(db.giftAssignments[0]);
-            console.log(ge.memberId);
+        for (const ge of giftExchanges) {
             let index = db.giftAssignments.findIndex(x => x.memberId === ge.memberId)
             if (index === -1) {
-                console.log('dunnae exist');
+                // this member did not exist in previous 'years'
                 db.giftAssignments.push(ge);
             } else {
-                console.log('it exists and im inserting at' + index );
+                // update the existing members recipient list
                 db.giftAssignments[index] = ge;
             }
         }
-
         await super.saveDb(db);
-        return giftExchanges;
     }
 
 }

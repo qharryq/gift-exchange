@@ -9,7 +9,7 @@ class MockGiftExchangeDbMethods {
 
     private readonly dbFilePath = 'src/daos/MockDb/MockGiftExchangeDb.json';
 
-    protected openDb(): Promise<IDatabase> {
+    public openDb(): Promise<IDatabase> {
         return jsonfile.readFile(this.dbFilePath) as Promise<IDatabase>;
     }
 

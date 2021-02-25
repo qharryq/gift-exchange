@@ -41,42 +41,39 @@ class MemberDao extends MockMemberDbMethods implements IMemberDao {
             throw new Error('Another member is already using that email');
         }
         const db = await super.openDb();
-        // bad unique id generator, but sufficient for a demo, actually switch it out for uuid
+        // bad unique id generator, but sufficient for a demo
         member.id = Math.floor(Math.random() * 1000000000).toString();
         db.members.push(member);
         await super.saveDb(db);
         return member;
     }
 
-    // TODO use findIndex here and in delete, like in gift exchange
     public async update(member: IMember): Promise<IMember | null> {
         const db = await super.openDb();
-        for (let i = 0; i < db.members.length; i++) {
-            if (db.members[i].id === member.id) {
-                //if updating the member's email address, check that it isn't in use by someone else
-                if (db.members[i].email !== member.email) {
-                    if (await this.emailInUse(member.email)){
-                        throw new Error('This email already belongs to another family member');
-                    }
+        let index = db.members.findIndex(x => x.id === member.id);
+        if (index !== -1) {
+            //if updating the member's email address, check that it isn't in use by someone else
+            if (db.members[index].email !== member.email) {
+                if (await this.emailInUse(member.email)){
+                    throw new Error('This email already belongs to another family member');
                 }
-                db.members[i] = member;
-                await super.saveDb(db);
-                return member;
             }
+            db.members[index] = member;
+            await super.saveDb(db);
+            return member;
         }
-        return null;
+        else return null;
     }
 
     public async delete(id: string): Promise<boolean> {
         const db = await super.openDb();
-        for (let i = 0; i < db.members.length; i++) {
-            if (db.members[i].id === id) {
-                db.members.splice(i, 1);
-                await super.saveDb(db);
-                return true;
-            }
+        let index = db.members.findIndex(x => x.id === id);
+        if (index !== -1) {
+            db.members.splice(index, 1);
+            await super.saveDb(db);
+            return true;
         }
-        return false;
+        else return false;
     }
 }
 
