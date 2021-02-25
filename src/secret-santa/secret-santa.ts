@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import GiftExchangeDao from '@daos/GiftExchange/GiftExchangeDao';
 import GiftExchange from '@entities/GiftExchange';
 import { IMember } from '@entities/Member';
@@ -37,7 +38,7 @@ export const shuffle = (arr: string[]) => {
 export const getRecipient = async (member: IMember, remainingRecipients: string[]) => {
     // for each member construct a list of possible recipients
     // which is the remainingRecipients minus (the current member + it's recipients for the previous 2 shuffles)
-    let previousRecipients = await giftExchangeDao.getRecentRecipients(member.id);
+    const previousRecipients = await giftExchangeDao.getRecentRecipients(member.id);
     let exclusions : string[] = [];
     if (previousRecipients.length > 0) {
         exclusions = previousRecipients;
@@ -52,7 +53,7 @@ export const getRecipient = async (member: IMember, remainingRecipients: string[
     } else {
         // pick a random recipient
         shuffle(shortlist);
-        let recipient = shortlist[0];
+        const recipient = shortlist[0];
         previousRecipients.unshift(recipient);
         previousRecipients.length = 2;
         return new GiftExchange(member.id, previousRecipients);
@@ -63,7 +64,7 @@ export const getRecipientPairs = async (members: IMember[]) => {
     let pairs: IGiftExchange[] = []
     let remainingRecipients = members.map(x => x.id);
     for await (const member of members) {
-        let giftExchange = await getRecipient(member, remainingRecipients);
+        const giftExchange = await getRecipient(member, remainingRecipients);
         if (!giftExchange) {
             // start over as there are no possible recipients for this member
             return null;
@@ -79,7 +80,7 @@ export const getRecipientPairs = async (members: IMember[]) => {
 
 export const calculateRecipientsLoop = async (members: IMember[], maxRetries: number, currentIteration: number): Promise<IGiftExchange[]> => {
     if (currentIteration < maxRetries) {
-        let result = await getRecipientPairs(members);
+        const result = await getRecipientPairs(members);
         if (result){
             return result;
         }

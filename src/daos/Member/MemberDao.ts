@@ -50,7 +50,7 @@ class MemberDao extends MockMemberDbMethods implements IMemberDao {
 
     public async update(member: IMember): Promise<IMember | null> {
         const db = await super.openDb();
-        let index = db.members.findIndex(x => x.id === member.id);
+        const index = db.members.findIndex(x => x.id === member.id);
         if (index !== -1) {
             //if updating the member's email address, check that it isn't in use by someone else
             if (db.members[index].email !== member.email) {
@@ -67,7 +67,7 @@ class MemberDao extends MockMemberDbMethods implements IMemberDao {
 
     public async delete(id: string): Promise<boolean> {
         const db = await super.openDb();
-        let index = db.members.findIndex(x => x.id === id);
+        const index = db.members.findIndex(x => x.id === id);
         if (index !== -1) {
             db.members.splice(index, 1);
             await super.saveDb(db);

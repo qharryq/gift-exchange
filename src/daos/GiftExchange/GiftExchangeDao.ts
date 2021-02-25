@@ -30,7 +30,7 @@ class GiftExchangeDao extends MockGiftExchangeDbMethods implements IGiftExchange
     public async addOrUpdate(giftExchanges: IGiftExchange[]): Promise<void> {
         const db = await super.openDb();
         for (const ge of giftExchanges) {
-            let index = db.giftAssignments.findIndex(x => x.memberId === ge.memberId)
+            const index = db.giftAssignments.findIndex(x => x.memberId === ge.memberId)
             if (index === -1) {
                 // this member did not exist in previous 'years'
                 db.giftAssignments.push(ge);
