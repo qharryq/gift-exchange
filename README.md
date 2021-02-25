@@ -3,7 +3,7 @@ How to run:
 1. npm install
 2. npm run start:dev
 
-This is my implentation of a secret-santa API. It randomly matches family members with each other, with the constraint that family members cannot recieve a gift from the same person more than once every 3 years.
+This is my implentation of a secret-santa API and backend, created using Express/Node/Typescript. It randomly matches family members with each other, with the constraint that family members cannot recieve a gift from the same person more than once every 3 years.
 
 I have two DB tables to manage this (in the form of JSON files). The Members table stores basic information about each family member (id, email and name), while the GiftExchange table contains two columns: memberId (foreign key) and recentRecipientMemberIds (containing the last 2 family members they gifted to). 
 
