@@ -1,6 +1,13 @@
 # gift-exchange
+How to run:
+1. npm install
+2. npm run start:dev
 
-It works as follows:
+This is my implentation of a secret-santa API. It randomly matches family members with each other, with the constraint that family members cannot recieve a gift from the same person more than once every 3 years.
+
+I have two DB tables to manage this (in the form of JSON files!). The Members table stores basic information about each family member (id, email and name), while the GiftExchange table contains two columns: memberId (foreign key) and recentRecipientMemberIds (containing the last 2 family members they gifted to). 
+
+The actual secret santa algorithm works as follows:
 
     1. It iterates through the family members (retrieved from the Members db).
     2. For each member it calculates the possible recipients remaining for them. (stored in shortlist array)
@@ -14,3 +21,7 @@ It works as follows:
        in which case an error is returned saying a selection could not be made with the current constraints.
 
     It's not a clever implementation as it works through sheer force/retries rather than graphs.
+
+Things I would change:
+UNIT TESTS - I simply ran out of time
+Introduce the concept of different families by adding a separate Family table
